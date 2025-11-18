@@ -1,0 +1,225 @@
+PROBLEM 1: DELIVERY COST ESTIMATION
+====================================
+
+STEP 1: Read Input
+  - Read base delivery cost
+  - Read number of packages
+  - For each package, read: pkg_id, weight, distance, offer_code
+
+STEP 2: For Each Package, Calculate Delivery Cost
+  - deliveryCost = baseDeliveryCost + (weight × 10) + (distance × 5)
+
+STEP 3: Check if Offer is Valid
+  - If offer_code is "NA" or not found, discount = 0
+  - Otherwise, check if package meets offer criteria:
+
+  OFR001 (10% discount): Distance < 200 km AND Weight 70-200 kg
+  OFR002 (7% discount): Distance 50-150 km AND Weight 100-250 kg
+  OFR003 (5% discount): Distance 50-250 km AND Weight 10-150 kg
+
+STEP 4: Calculate Discount
+  - If criteria met: discount = deliveryCost × (offerPercent / 100)
+  - If criteria not met: discount = 0
+
+STEP 5: Calculate Total Cost
+  - totalCost = deliveryCost - discount
+
+STEP 6: Output
+  - Print: pkg_id, discount, totalCost
+  - Print for all packages in order
+
+
+
+PROBLEM 2: DELIVERY TIME ESTIMATION
+====================================
+
+STEP 1: Read Input
+  - Read base delivery cost
+  - Read number of packages
+  - For each package, read: pkg_id, weight, distance, offer_code
+  - Read vehicle info: vehicle_count, max_speed, max_capacity
+
+STEP 2: Calculate Costs and Discounts
+  - Use Problem 1 logic to calculate discount and cost for each package
+
+STEP 3: Initialize Vehicle Tracking
+  - Create array: vehicleAvailableTime[i] = 0 for each vehicle
+  - Create array: packageDeliveryTime[pkg_id] = 0
+  - remainingPackages = all packages (not yet assigned)
+
+STEP 4: Loop Until All Packages Assigned
+  WHILE remainingPackages is not empty:
+  
+    STEP 4a: Find Next Available Vehicle
+      - vehicleIndex = vehicle with minimum availableTime
+      - currentTime = vehicleAvailableTime[vehicleIndex]
+    
+    STEP 4b: Find Best Shipment for This Vehicle
+      - Try all possible combinations of remaining packages
+      - For each combination:
+        * Check if total weight <= vehicle capacity
+        * If valid, score it by:
+          1. Number of packages (prefer more)
+          2. Total weight (prefer heavier)
+          3. Max distance in shipment (prefer smaller)
+      - bestShipment = combination with highest score
+    
+    STEP 4c: Assign Shipment to Vehicle
+      - For each package in bestShipment:
+        * deliveryTime = package.distance / max_speed
+        * packageDeliveryTime[pkg_id] = currentTime + deliveryTime
+      
+      - maxDistance = highest distance in bestShipment
+      - maxDeliveryTime = maxDistance / max_speed
+      
+      - vehicleAvailableTime[vehicleIndex] = currentTime + (2 × maxDeliveryTime)
+        (multiply by 2 because vehicle needs to return)
+      
+      - Remove packages from remainingPackages
+  
+  END WHILE
+
+STEP 5: Output Results
+  - For each package in original order:
+    * Print: pkg_id, discount, totalCost, deliveryTime
+    * Round deliveryTime to 2 decimal places
+
+
+EXAMPLE - PROBLEM 1
+===================
+
+Input:
+  100 3
+  PKG1 5 5 OFR001
+  PKG2 15 5 OFR002
+  PKG3 10 100 OFR003
+
+Processing PKG1:
+  deliveryCost = 100 + (5 × 10) + (5 × 5) = 100 + 50 + 25 = 175
+  OFR001: needs distance < 200 AND weight 70-200
+    distance 5 < 200? YES
+    weight 5 in range 70-200? NO
+  discount = 0
+  totalCost = 175 - 0 = 175
+
+Processing PKG2:
+  deliveryCost = 100 + (15 × 10) + (5 × 5) = 100 + 150 + 25 = 275
+  OFR002: needs distance 50-150 AND weight 100-250
+    distance 5 in range 50-150? NO
+  discount = 0
+  totalCost = 275 - 0 = 275
+
+Processing PKG3:
+  deliveryCost = 100 + (10 × 10) + (100 × 5) = 100 + 100 + 500 = 700
+  OFR003: needs distance 50-250 AND weight 10-150
+    distance 100 in range 50-250? YES
+    weight 10 in range 10-150? YES
+  discount = 700 × 5% = 35
+  totalCost = 700 - 35 = 665
+
+Output:
+  PKG1 0 175
+  PKG2 0 275
+  PKG3 35 665
+
+
+EXAMPLE - PROBLEM 2
+===================
+
+Input:
+  100 5
+  PKG1 50 30 OFR001
+  PKG2 75 125 OFR008
+  PKG3 175 100 OFR003
+  PKG4 110 60 OFR002
+  PKG5 155 95 NA
+  2 70 200
+
+Setup:
+  vehicles: 2, maxSpeed: 70 km/hr, capacity: 200 kg
+  vehicleAvailableTime = [0, 0]
+
+Processing:
+
+ITERATION 1:
+  nextVehicle = 0 (available at time 0)
+  currentTime = 0
+  remaining = [PKG1, PKG2, PKG3, PKG4, PKG5]
+  
+  Find best shipment:
+    PKG2(75) + PKG4(110) = 2 packages, 185 kg, maxDist 125 BEST
+    PKG1(50) + PKG5(155) = 2 packages, 205 kg (exceeds 200 - invalid)
+    PKG3(175) alone = 1 package, 175 kg
+  
+  Best = PKG2 + PKG4
+  
+  Delivery times:
+    PKG2: 0 + (125/70) = 0 + 1.78 = 1.78
+    PKG4: 0 + (60/70) = 0 + 0.85 = 0.85
+  
+  Max distance = 125, maxDeliveryTime = 1.78
+  vehicleAvailableTime[0] = 0 + (2 × 1.78) = 3.56
+  
+  remaining = [PKG1, PKG3, PKG5]
+
+ITERATION 2:
+  nextVehicle = 1 (available at time 0 < 3.56)
+  currentTime = 0
+  remaining = [PKG1, PKG3, PKG5]
+  
+  Find best shipment:
+    PKG3(175) = 1 package, 175 kg
+    PKG1(50) + PKG5(155) = 2 packages, 205 kg (exceeds 200)
+    PKG5(155) alone = 1 package, 155 kg
+  
+  Best = PKG3 (1 package, 175 kg vs 1 package 155 kg - choose heavier)
+  
+  Delivery times:
+    PKG3: 0 + (100/70) = 1.42
+  
+  Max distance = 100, maxDeliveryTime = 1.42
+  vehicleAvailableTime[1] = 0 + (2 × 1.42) = 2.84
+  
+  remaining = [PKG1, PKG5]
+
+ITERATION 3:
+  nextVehicle = 1 (available at time 2.84 < 3.56)
+  currentTime = 2.84
+  remaining = [PKG1, PKG5]
+  
+  Find best shipment:
+    PKG1(50) + PKG5(155) = 2 packages, 205 kg (exceeds 200)
+    PKG5(155) = 1 package, 155 kg
+    PKG1(50) = 1 package, 50 kg
+  
+  Best = PKG5 (1 package, 155 kg vs 1 package 50 kg - choose heavier)
+  
+  Delivery times:
+    PKG5: 2.84 + (95/70) = 2.84 + 1.35 = 4.19
+  
+  Max distance = 95, maxDeliveryTime = 1.35
+  vehicleAvailableTime[1] = 2.84 + (2 × 1.35) = 5.54
+  
+  remaining = [PKG1]
+
+ITERATION 4:
+  nextVehicle = 0 (available at time 3.56 < 5.54)
+  currentTime = 3.56
+  remaining = [PKG1]
+  
+  Best shipment = PKG1
+  
+  Delivery times:
+    PKG1: 3.56 + (30/70) = 3.56 + 0.42 = 3.98
+  
+  Max distance = 30, maxDeliveryTime = 0.42
+  vehicleAvailableTime[0] = 3.56 + (2 × 0.42) = 4.40
+  
+  remaining = []
+
+Final Output (in original order):
+  PKG1 0 750 3.98
+  PKG2 0 1475 1.78
+  PKG3 0 2350 1.42
+  PKG4 105 1395 0.85
+  PKG5 0 2125 4.19
