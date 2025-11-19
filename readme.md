@@ -56,11 +56,11 @@ PKG5 155 95 NA
 **Output:**
 ```
 PKG_ID    DISCOUNT    TOTAL_COST    DELIVERY_TIME (hrs)
-PKG1      -           ₹750          3.98
-PKG2      -           ₹1475         1.78
-PKG3      -           ₹2350         1.42
-PKG4      ₹105        ₹1395         0.85
-PKG5      -           ₹2125         4.19
+PKG1      -           750          3.98
+PKG2      -           1475         1.78
+PKG3      -           2350         1.42
+PKG4      105         1395         0.85
+PKG5      -           2125         4.19
 ```
 
 ## Features
@@ -76,3 +76,4 @@ PKG5      -           ₹2125         4.19
 - `problem-01.js` - Delivery cost calculator
 - `problem-02.js` - Delivery time optimizer
 - `README.md` - This file
+- `ALGORITHM.txt` - Algorithm explanation
