@@ -1,23 +1,38 @@
 # Delivery Cost & Time Estimation System
 
-## Overview
+A Node.js application for calculating delivery costs and optimizing package deliveries across multiple vehicles.
 
-This project has two solutions:
-- **Problem 1**: Calculate delivery costs with discount offers
-- **Problem 2**: Optimize deliveries across multiple vehicles with time estimation
+## Project Structure
 
-## What's Inside
+```
+src/
+├── models/          # Data models for coupon codes and details
+│   └── OfferRegistry.js
+├── services/        # Service files for calculations and optimizations/ Business logic
+│   ├── DeliveryCalculator.js
+│   ├── CostEstimationService.js
+│   ├── DeliverySchedulingService.js
+│   ├── ShipmentOptimizer.js
+│   ├── VehicleAllocator.js
+│   └── DeliveryTimeCalculator.js
+└── utils/          # Utility functions for I/O and formatting
+    ├── InputParser.js
+    └── OutputFormatter.js
+problem-01.js       # Entry point for Delivery Cost Estimation
+problem-02.js       # Entry point for Delivery Time Estimation
+ALGORITHM.txt       # Algorithm explanations and steps
+```
+
+## Quick Start
 
 ### Problem 1: Delivery Cost Estimation
+Calculate delivery costs with discount offers.
 
-Calculates the delivery cost using: `Base + (Weight × 10) + (Distance × 5)`
-
-**How to run:**
 ```bash
 node problem-01.js
 ```
 
-**Input format:**
+**Input Example:**
 ```
 100 3
 PKG1 5 5 OFR001
@@ -25,24 +40,13 @@ PKG2 15 5 OFR002
 PKG3 10 100 OFR003
 ```
 
-**Output:**
-```
-PKG_ID    DISCOUNT    TOTAL_COST
-PKG1      0           175
-PKG2      0           275
-PKG3      35          665
-```
-
 ### Problem 2: Delivery Time Estimation
-
-Optimizes package assignments to vehicles and calculates delivery times.
-
-**How to run:**
+Optimize deliveries across vehicles and calculate estimated delivery times.
 ```bash
 node problem-02.js
 ```
 
-**Input format:**
+**Input Example:**
 ```
 100 5
 PKG1 50 30 OFR001
@@ -53,27 +57,37 @@ PKG5 155 95 NA
 2 70 200
 ```
 
-**Output:**
-```
-PKG_ID    DISCOUNT    TOTAL_COST    DELIVERY_TIME (hrs)
-PKG1      -           750          3.98
-PKG2      -           1475         1.78
-PKG3      -           2350         1.42
-PKG4      105         1395         0.85
-PKG5      -           2125         4.19
-```
-
 ## Features
 
-- Cost calculation with multiple discount offers
-- Input validation with error handling
-- Optimal package-to-vehicle assignment
-- Accurate delivery time estimation
-- Clean, well-organized code
+✅ Cost calculation with discounts  
 
-## Files
+✅ Delivery scheduling across vehicles
 
-- `problem-01.js` - Delivery cost calculator
-- `problem-02.js` - Delivery time optimizer
-- `README.md` - This file
-- `ALGORITHM.txt` - Algorithm explanation
+✅ Calculate estimated delivery times
+
+✅ Input validation & error handling  
+
+✅ Clean, modular architecture  
+
+## How It Works
+
+**Cost Formula:** `Base + (Weight × 10) + (Distance × 5)`
+
+**Discount Offers:**
+- OFR001: 10% off on weight ≥ 50kg
+- OFR002: 7% off on weight ≥ 100kg  
+- OFR003: 5% off on weight ≥ 150kg
+
+**Delivery Optimization:**
+- Greedy algorithm to maximize packages per shipment
+- Minimize vehicle return time
+- Round-robin vehicle dispatch
+
+## Technologies
+
+- Node.js
+- CommonJS modules
+
+## Documentation
+
+- `ALGORITHM.txt` - Step-by-step algorithms
