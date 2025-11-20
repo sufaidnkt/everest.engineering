@@ -88,6 +88,47 @@ PKG5 155 95 NA
 - Node.js
 - CommonJS modules
 
+## Running Tests
+
+### Prerequisites
+Ensure dependencies are installed:
+```bash
+npm install
+```
+
+### Execute Test Suite
+Run all test cases:
+```bash
+npm test
+```
+
+### Test Suite Overview
+- **Total Tests:** 24 comprehensive test cases
+- **Test Framework:** Jest
+- **Coverage:** All services and inputs validated
+
+**Test Files:**
+- `tests/InputParser.test.js` - Input validation tests
+- `tests/DeliveryCalculator.test.js` - Cost and discount calculations
+- `tests/CostEstimationService.test.js` - Problem 1 service tests
+- `tests/DeliverySchedulingService.test.js` - Problem 2 service tests
+- `tests/ShipmentOptimizer.test.js` - Shipment optimization tests
+- `tests/VehicleAllocator.test.js` - Vehicle dispatch tests
+- `tests/DeliveryTimeCalculator.test.js` - Time calculation tests
+
+### Example Test Output
+```
+Test Suites: 7 passed, 7 total
+Tests:       24 passed, 24 total
+Time:        ~0.25s
+```
+
+### Additional Test Commands
+```bash
+npm run test:watch      # Run tests in watch mode
+npm run test:verbose    # Run tests with detailed output
+```
+
 ## Documentation
 
 - `ALGORITHM.txt` - Step-by-step algorithms
