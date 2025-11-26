@@ -1,9 +1,14 @@
 /**
- * OfferRegistry: Centralized offer management
+ * OfferRegistry: Centralized offer management (Singleton Pattern)
  * Responsibility: Store and retrieve offer definitions
+ * Note: Single shared instance ensures all modules see same offer state
  */
 class OfferRegistry {
   constructor() {
+    if (OfferRegistry.instance) {
+      return OfferRegistry.instance;
+    }
+
     this.offers = {
       OFR001: {
         percent: 10,
@@ -21,6 +26,9 @@ class OfferRegistry {
         weightRange: { min: 10, max: 150 }
       }
     };
+
+    // Store singleton instance
+    OfferRegistry.instance = this;
   }
 
   /**
@@ -48,6 +56,27 @@ class OfferRegistry {
    */
   addOffer(code, offer) {
     this.offers[code] = offer;
+  }
+
+  /**
+   * Remove an offer
+   * @param {string} code - Offer code to remove
+   * @returns {boolean} True if offer was removed, false if not found
+   */
+  removeOffer(code) {
+    if (this.offers[code]) {
+      delete this.offers[code];
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Get all offers
+   * @returns {Object} All offers
+   */
+  getAllOffers() {
+    return { ...this.offers };
   }
 }
 

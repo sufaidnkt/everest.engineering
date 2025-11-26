@@ -132,3 +132,7 @@ npm run test:verbose    # Run tests with detailed output
 ## Documentation
 
 - `ALGORITHM.txt` - Step-by-step algorithms
+
+
+
+We have an OfferRegistry where all offers are initialized in the constructor. In Problem 1 and Problem 2, you both initialize and use the same OfferRegistry. Now suppose there is a function that removes an offer. If Problem 1 calls this remove function, Problem 2 won’t know that the offer was removed. How would you solve this issue?

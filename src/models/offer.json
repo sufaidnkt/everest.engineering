@@ -1,0 +1,35 @@
+{
+    "OFR001": {
+        "percent": 10,
+        "distanceRange": {
+            "min": 0,
+            "max": 200
+        },
+        "weightRange": {
+            "min": 70,
+            "max": 200
+        }
+    },
+    "OFR002": {
+        "percent": 10,
+        "distanceRange": {
+            "min": 0,
+            "max": 200
+        },
+        "weightRange": {
+            "min": 70,
+            "max": 200
+        }
+    },
+    "OFR003": {
+        "percent": 10,
+        "distanceRange": {
+            "min": 0,
+            "max": 200
+        },
+        "weightRange": {
+            "min": 70,
+            "max": 200
+        }
+    }
+}

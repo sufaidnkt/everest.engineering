@@ -5,9 +5,47 @@
  */
 class ShipmentOptimizer {
   	/**
-	* Find the best shipment from remaining packages
+	* Greedy algorithm to find shipment
+	* Strategy: Maximize count → Maximize weight → Minimize distance
+	* Time Complexity: O(n^2)
+	* Note: Fast but may not find optimal solution
+	*
+	* @param {Array} remaining - Remaining packages
+	* @param {number} capacity - Vehicle capacity
+	* @returns {Array} Selected packages for this shipment
+	*/
+  	static findBestShipmentGreedy(remaining, capacity) {
+		if (remaining.length === 0) return [];
+
+		// Strategy: Maximize package count first
+		// Sort by weight ascending to fit more packages
+		const sorted = [...remaining].sort((a, b) => a.weight - b.weight);
+
+		const selected = [];
+		let totalWeight = 0;
+
+		// Greedily select lighter packages to maximize count
+		for (const pkg of sorted) {
+			if (totalWeight + pkg.weight <= capacity) {
+				selected.push(pkg);
+				totalWeight += pkg.weight;
+			}
+		}
+
+		// Fallback: if no packages selected, try to fit the single lightest package
+		if (selected.length === 0 && sorted[0].weight <= capacity) {
+			return [sorted[0]];
+		}
+
+		return selected;
+	}
+
+  	/**
+	* Find the best shipment from remaining packages (Bitmask approach)
 	* Constraints: Total weight <= capacity
 	* Strategy: Maximize count, then weight, then minimize distance
+	* Time Complexity: O(2^n × n)
+	* Note: Optimal solution but slower for large datasets
 	*
 	* @param {Array} remaining - Remaining packages
 	* @param {number} capacity - Vehicle capacity

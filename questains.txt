@@ -1,0 +1,199 @@
+Problem -1 : Delivery Cost Estimation with Offers
+================================
+Since it’s a new business, the team has decided to pass coupons
+around the town which will help them attract more customers.
+
+Things to keep in mind:
+    -   Only offer code can be applied for any given package. one offer criterias.
+    -   Package should meet the required mentioned 
+    -   If offer code is , discounted amount not valid/found will be equal to 0.
+
+Offer Criteria
+    The offers can be used according to the criteria that Tombo has captured in this table. Discount will not be provided if no offer code is applied.
+
+
+            Distance (in km)    Weight (in kg)    
+OFR001 
+10% Discount    < 200               70-200
+
+OFR002 
+7% Discount     50-150           100-250
+
+OFR003 
+5% Discount   50-250                10-150
+
+
+
+Challenge
+    You are required to build a command line application to estimate the total delivery cost of each package with an offer code (if applicable).
+
+Note : Note: Code should be extensible & scalable for more offer codes.
+
+
+Delivery Cost = Base Delivery Cost + (Package Total Weight * 10) + (Distance to Destination * 5) 
+
+Input Format
+
+Input Format                                            Sample (I)
+-------------------------------                 --------------------------------------           
+base_delivery_cost no_of_packges                            100 3
+pkg_id1 pkg_weight1_in_kg distance1_in_km offer_code1       PKG1 5 5 OFR001
+pkg_id2 pkg_weight2_in_kg distance2_in_km offer_code2       PKG2 15 5 OFR002
+pkg_id3 pkg_weight3_in_kg distance3_in_km offer_code3       PKG3 10 100 OFR003
+
+
+Output Format                                            Sample (I)
+-------------------------------                 --------------------------------------           
+pkg_id1 discount1 total_cost1                       PKG1 0 175
+pkg_id2 discount2 total_cost2                       PKG2 0 275
+pkg_id3 discount3 total_cost3                       PKG3 35 665
+
+
+Explanation 
+
+    PKG 1: Testcase
+        Base.delivery cost: 100
+        Weight: 5kg | Distance: 5km 
+        Offer code: OFR001
+
+
+    Delivery Cost = 100 + (5 * 10) + (5 * 5) = 175.00
+    Discount = 0 (Offer not applicable as criteria not met)
+    Total Cost = 175 - 0 = 175.00
+
+
+    PKG 3: Testcase
+        Base.delivery cost: 100
+        Weight: 10kg | Distance: 100km 
+        Offer code: OFR003
+
+    Delivery Cost = 100 + (10* 10) + (100 * 5) = 700.00
+    Discount = 5% of 700 = 35.00 (Offer applicable as criteria met)
+    Total Cost = 700 - 35 = 665.00
+
+
+
+
+
+Problem -2 : Delivery Time Estimation
+===========================
+Now all these packages should be delivered to their destinations in the fleet of vehicles Kiki owns. She has N no. of vehicles available for delivering the packages. 
+
+Things to keep in mind:
+    -   Each Vehicle has a on limit (L) maximum weight (kg) that it can carry.
+    -  All Vehicles travel at the same and in the same route. It is assumed that all the destinations can be covered in a single route.
+
+Delivery Criteria
+    - The delivery can be made using the criteria illustrated below.
+    - Shipment should contain max packages  vehicle can carry in a trip
+    - We should prefer heavier packages when  there are multiple shipments with the same  no. of packages. 
+    - If the weights are also the same, preference  should be given to the shipment which can  be delivered first.
+
+Challenge
+    Tombo, the geeky business partner obsessed with delivery metrics wants to maximise efficiency.
+
+        You are required to build a command line application to calculate the estimated delivery time for every package by maximizing no. of packages in  every shipment
+
+
+Note : Note: Roundoff estimated delivery time upto 2 digits. (for example 3.456 becomes 3.45)
+
+Sample Input Formats
+
+
+Input Format                                        Sample (I)
+-------------------------------                 --------------------------------------
+base_delivery_cost no_of_packges                        100 5
+pkg_id1 pkg_weight1_in_kg distance1_in_km offer_code1   PKG1 50 30 OFR001
+pkg_id2 pkg_weight2_in_kg distance2_in_km offer_code2   PKG2 75 125 OFR008
+pkg_id3 pkg_weight3_in_kg distance3_in_km offer_code3   PKG3 175 100 OFR003
+pkg_id4 pkg_weight4_in_kg distance4_in_km offer_code4   PKG4 110 60 OFR002
+pkg_id5 pkg_weight5_in_kg distance5_in_km offer_code5   PKG5 155 95 NA
+vehicle_no_of_units max_speed max_carriable_weight    2 70 200
+Output Format                                        Sample (I)
+-------------------------------                 --------------------------------------
+pkg_id1 discount1 total_cost1 estimated_delivery_time1   PKG1 0 750 3.98
+pkg_id2 discount2 total_cost2 estimated_delivery_time2   PKG2 0 1475 1.78
+pkg_id3 discount3 total_cost3 estimated_delivery_time3   PKG3 0 2350 1.42
+pkg_id4 discount4 total_cost4 estimated_delivery_time4   PKG4 105 1395 0.85
+pkg_id5 discount5 total_cost5 estimated_delivery_time5   PKG5 0 2125 4.19
+
+
+
+Explanation
+  Packages 05 
+  Vehicles 02 
+  Max Speed 70km/hr 
+  Max load 200kg
+
+Step 1 :
+    Packages Remaining: 05
+    Vehicles Available: 02 
+    Current Time: 0 hrs
+
+    PKG1 50kg + PKG2 75kg => 02 packages 125kg
+    PKG1 50kg + PKG4110kg => 02 packages 160kg
+    PKG2 75kg + PKG4110kg => 02 packages 185kg
+
+    Vehicle 01  Delivering PKG2 (125km / 70kmph) => 1.78 hrs
+                Delevering PKG4 (60km / 70kmph) => 0.85 hrs
+
+
+        Vehicle 01 will be avilable after (2*1.78) = 3.56 hrs
+
+
+
+Step 2 :
+    Packages Remaining: 03
+    Vehicles Available: 01
+    Current Time: 0 hrs
+    
+    PKG1 50kg + PKG3 175kg  + PKG5 155kg => 01 packages (PKG3) 175kg Most weight
+
+    Vehicle 02  Delivering PKG3 (100km / 70kmph) => 1.42 hrs
+
+    Vehicle 02 will be avilable after (2*1.42) = 2.84 hrs
+
+
+Step 3 :
+    Packages Remaining: 02
+    Vehicles Available: 00
+
+    Vehicle 01 returned at 3.56 hrs
+    Vehicle 02 returned at 2.84 hrs
+
+
+    vehicle 02 is available first after 2.84 hrs (current time = 2.84 hrs)
+
+
+Step 4 :
+    Packages Remaining: 02
+    Vehicles Available: 01
+    Current Time: 2.84 hrs
+
+    PKG1 50kg + PKG5 155kg => 02 packages 205kg (exceeds max limit)
+    PKG1 50kg => 01 packages 50kg
+    PKG5 155kg => 01 packages 155kg (most weight)
+
+    Vehicle 02  Delivering PKG5 (95km / 70kmph) 2.84+1.35 hrs = 4.19 hrs
+
+    Vehicle 02 will be avilable after (2.84+2*1.35) = 5.54 hrs (current time = 2.84 + 2.70 = 5.54 hrs)
+
+
+Step 5 :
+    Packages Remaining: 01
+    Vehicles Available: 00
+    Current Time: 2.84 hrs
+
+    Vehicle 01 returned at 3.56 hrs
+    Vehicle 02 returned at 5.54 hrs
+
+    vehicle 01 is available first after 0.72 hrs (3.56-2.84=0.72 hrs)
+
+Step 6 :
+    Packages Remaining: 01
+    Vehicles Available: 01
+    Current Time: 3.56 hrs
+
+    PKG1 50kg => 01 packages 50kg
+
+    vehicle 01  Delivering PKG1 (30km / 70kmph) => 3.98 hrs
